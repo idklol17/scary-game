@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>A Scary...? Game</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    /* Inline CSS for flickering effect */
+    @keyframes flicker {
+      0% { opacity: 1; }
+      50% { opacity: 0.8; }
+      100% { opacity: 1; }
+    }
+    .flicker-text {
+      animation: flicker 0.3s infinite alternate; /* Adjust duration and iteration as needed */
+    }
+
+    /* Basic mobile adjustments (though most styles are handled by flexible units) */
+    body {
+        font-size: 4vw; /* Responsive font size */
+    }
+    #mainText {
+        font-size: 8vw; /* Larger responsive font for main text */
+    }
+    #startButton {
+        padding: 2.5vw 5vw; /* Responsive padding */
+        font-size: 4.5vw; /* Responsive font size */
+    }
+    #hintText {
+        font-size: 3vw; /* Responsive font size */
+    }
+
+    /* Specific adjustments for very small screens if needed, otherwise flexible units handle it */
+    @media (max-width: 480px) {
+        #mainText {
+            font-size: 9vw;
+        }
+        #startButton {
+            padding: 3vw 6vw;
+            font-size: 5vw;
+        }
+    }
+</style>
+</head>
+<body style="font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #f0f0f0; margin: 0; transition: background-color 1s ease-in-out, color 1s ease-in-out;">
+  <div id="gameContainer" style="text-align: center; max-width: 90vw;">
+    <h1 id="mainText" style="color: #333; transition: color 1s ease-in-out;">Welcome...</h1>
+    <button id="startButton" style="padding: 10px 20px; font-size: 16px; cursor: pointer; transition: background-color 1s ease-in-out, color 1s ease-in-out;">Begin</button>
+    <p id="hintText" style="margin-top: 20px; font-size: small; color: #777; display: none;">Click the button...</p>
+  </div>
+
+  <script>
+    const gameContainer = document.getElementById('gameContainer');
+    const mainText = document.getElementById('mainText');
+    const startButton = document.getElementById('startButton');
+    const hintText = document.getElementById('hintText');
+    const body = document.body;
+    let step = 0;
+
+    startButton.addEventListener('click', () => {
+      step++;
+      if (step === 1) {
+        mainText.textContent = "You hear a faint creaking...";
+        hintText.style.display = 'block';
+        startButton.textContent = "Listen closer...";
+        body.style.backgroundColor = '#f0f0f0'; // Ensure light background for start
+        mainText.style.color = '#333'; // Ensure dark text for start
+        startButton.style.backgroundColor = ''; // Reset button color
+        startButton.style.color = ''; // Reset button text color
+        mainText.classList.remove('flicker-text'); // Remove flicker if restarting
+      } else if (step === 2) {
+        mainText.textContent = "The shadow in the corner seems to move...";
+        startButton.textContent = "Look away?";
+        body.style.backgroundColor = '#d0d0d0';
+      } else if (step === 3) {
+        mainText.textContent = "A cold breath brushes your neck.";
+        mainText.classList.add('flicker-text');
+        startButton.textContent = "Turn around?";
+        body.style.backgroundColor = '#a0a0a0';
+      } else if (step === 4) {
+        mainText.textContent = "Something is definitely behind you...";
+        startButton.textContent = "RUN!";
+        body.style.backgroundColor = '#707070';
+        mainText.style.color = '#ff0000';
+      } else if (step === 5) {
+        mainText.textContent = "It looms closer, a vast, dark shape...";
+        startButton.textContent = "Face it?";
+        body.style.backgroundColor = '#404040';
+      } else if (step === 6) {
+        // THE HEARTWARMING TWIST!
+        mainText.textContent = "It was just a big, fluffy dog, looking for cuddles!";
+        mainText.classList.remove('flicker-text'); // Stop flickering
+        mainText.style.color = '#4CAF50'; // Green for warmth/happiness
+        body.style.backgroundColor = '#e0ffe0'; // Light, comforting green
+        startButton.textContent = "Awww!";
+        startButton.style.backgroundColor = '#8BC34A'; // Green button
+        startButton.style.color = '#ffffff'; // White text on button
+        hintText.style.display = 'none'; // Hide hint
+        hintText.textContent = "Game over. Refresh to play again!"; // Change hint text
+        setTimeout(() => { // Show hint again after a short delay
+            hintText.style.display = 'block';
+        }, 1000);
+        step = 0; // Reset step to allow replaying if desired, though not explicitly handled
+      }
+    });
+  </script>
+</body>
+</html>
+
